@@ -20,12 +20,9 @@
             <div class="mb-3">
                 <label class="form-label">Tipe</label>
                 <select name="type" id="type" class="form-select" required>
-                    <option value="Custom" {{ $approval->type == 'Custom' ? 'selected' : '' }}>Custom</option>
-                    <option value="HRIS" {{ $approval->type == 'HRIS' ? 'selected' : '' }}>HRIS</option>
-                    <option value="Total Amount >=" {{ $approval->type == 'Total Amount >=' ? 'selected' : '' }}>Total Amount >=</option>
-                    <option value="Total Amount >" {{ $approval->type == 'Total Amount >' ? 'selected' : '' }}>Total Amount ></option>
-                    <option value="Total Amount <=" {{ $approval->type == 'Total Amount <=' ? 'selected' : '' }}>Total Amount <=</option>
-                    <option value="Total Amount <" {{ $approval->type == 'Total Amount <' ? 'selected' : '' }}>Total Amount <</option>
+                    @foreach (\App\Models\WorkflowApproval::TYPE_OPTIONS as $value => $label)
+                        <option value="{{ $value }}" {{ $approval->type == $value ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
                 </select>
             </div>
 

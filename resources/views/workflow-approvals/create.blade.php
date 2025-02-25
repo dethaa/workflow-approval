@@ -18,12 +18,9 @@
             <div class="mb-3">
                 <label class="form-label">Type</label>
                 <select name="type" id="type" class="form-select" required>
-                    <option value="Custom">Custom</option>
-                    <option value="HRIS">HRIS</option>
-                    <option value="Total Amount >=">Total Amount >=</option>
-                    <option value="Total Amount >">Total Amount ></option>
-                    <option value="Total Amount <=">Total Amount <=</option>
-                    <option value="Total Amount <">Total Amount <</option>
+                    @foreach (\App\Models\WorkflowApproval::TYPE_OPTIONS as $type)
+                        <option value="{{ $type }}">{{ $type }}</option>
+                    @endforeach
                 </select>
             </div>
 

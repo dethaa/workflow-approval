@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class NeedApproval extends Model
 {
     protected $fillable = [
+        'modul_id',
         'transaction_id',
-        'workflow_approval_id',
-        'status',
+        'nik',
+        'name',
+        'email',
+        'position',
+        'level',
     ];
 
     public function transaction()

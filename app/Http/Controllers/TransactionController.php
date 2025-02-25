@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\NeedApproval;
 use App\Models\Transaction;
 use App\Models\WorkflowApproval;
 use Illuminate\Http\Request;
@@ -24,7 +25,60 @@ class TransactionController extends Controller
 
     public function store(Request $request)
     {
-        Transaction::create($request->all());
+        $transaction = Transaction::create($request->all());
+
+        $modul = $transaction->modul;
+
+        // Create NeedApprovals        
+        if ($modul->type == WorkflowApproval::TYPE_HRIS) {
+            $employee = $transaction->employee;
+            if ($employee->approver1_nik) {
+                NeedApproval::create([
+                    'modul_id' => $modul->id,
+                    'transaction_id' => $transaction->id,
+                    'nik' => $employee->approver1_nik,
+                    'name' => $employee->approver1_name,
+                    'email' => $employee->approver1_email,
+                    'position' => $employee->approver1_position,
+                    'level' => 1,
+                ]);
+            }
+
+            if ($employee->approver2_nik) {
+                NeedApproval::create([
+                    'modul_id' => $modul->id,
+                    'transaction_id' => $transaction->id,
+                    'nik' => $employee->approver2_nik,
+                    'name' => $employee->approver2_name,
+                    'email' => $employee->approver2_email,
+                    'position' => $employee->approver2_position,
+                    'level' => 2,
+                ]);
+            }
+        } else {
+            $amount = $transaction->amount;
+            $value = $modul->value;
+            if (
+                ($modul->type == WorkflowApproval::TYPE_MORE_THAN_EQUAL && $amount < $value) ||
+                ($modul->type == WorkflowApproval::TYPE_MORE_THAN && $amount <= $value) ||
+                ($modul->type == WorkflowApproval::TYPE_LESS_THAN_EQUAL && $amount > $value) ||
+                ($modul->type == WorkflowApproval::TYPE_LESS_THAN && $amount >= $value)
+            ) {
+                // tidak butuh approval, early return
+                return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil ditambahkan.');
+            }
+
+
+            NeedApproval::create([
+                'modul_id' => $modul->id,
+                'transaction_id' => $transaction->id,
+                'nik' => $modul->nik,
+                'name' => $modul->name,
+                'email' => $modul->email,
+                'position' => $modul->position,
+                'level' => 0, // belum tau levelnya dapat darimana
+            ]);
+        }
 
         return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil ditambahkan.');
     }
