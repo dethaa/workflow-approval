@@ -10,19 +10,20 @@
         </div>
     @endif
 
-    <a href="{{ route('workflow-approvals.create') }}" class="btn btn-primary mb-3">Tambah Approval</a>
+    <a href="{{ route('workflow-approvals.create') }}" class="btn btn-primary mb-3">Tambah Workflow Approval</a>
 
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr>
                 <th>#</th>
                 <th>Nama Modul</th>
-                <th>Type</th>
+                <th>Tipe</th>
                 <th>Value</th>
                 <th>NIK</th>
                 <th>Nama</th>
                 <th>Email</th>
                 <th>Jabatan</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -36,6 +37,14 @@
                     <td>{{ $approval->name }}</td>
                     <td>{{ $approval->email }}</td>
                     <td>{{ $approval->position }}</td>
+                    <td>
+                        <a href="{{ route('workflow-approvals.edit', $approval->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="{{ route('workflow-approvals.destroy', $approval->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                        </form>
+                    </td>
                 </tr>
             @empty
                 <tr>

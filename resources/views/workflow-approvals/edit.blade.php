@@ -1,35 +1,37 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Workflow Approval')
+@section('title', 'Edit Workflow Approval')
 
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h4>Tambah Workflow Approval</h4>
+        <h4>Edit Workflow Approval</h4>
     </div>
     <div class="card-body">
-        <form action="{{ route('workflow-approvals.store') }}" method="POST">
+        <form action="{{ route('workflow-approvals.update', $approval->id) }}" method="POST">
             @csrf
+            @method('PUT')
+
             <div class="mb-3">
-                <label class="form-label">Modul Name</label>
-                <input type="text" name="modul" class="form-control" required>
+                <label class="form-label">Nama Modul</label>
+                <input type="text" name="modul" class="form-control" value="{{ $approval->modul }}" required>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Type</label>
+                <label class="form-label">Tipe</label>
                 <select name="type" id="type" class="form-select" required>
-                    <option value="Custom">Custom</option>
-                    <option value="HRIS">HRIS</option>
-                    <option value="Total Amount >=">Total Amount >=</option>
-                    <option value="Total Amount >">Total Amount ></option>
-                    <option value="Total Amount <=">Total Amount <=</option>
-                    <option value="Total Amount <">Total Amount <</option>
+                    <option value="Custom" {{ $approval->type == 'Custom' ? 'selected' : '' }}>Custom</option>
+                    <option value="HRIS" {{ $approval->type == 'HRIS' ? 'selected' : '' }}>HRIS</option>
+                    <option value="Total Amount >=" {{ $approval->type == 'Total Amount >=' ? 'selected' : '' }}>Total Amount >=</option>
+                    <option value="Total Amount >" {{ $approval->type == 'Total Amount >' ? 'selected' : '' }}>Total Amount ></option>
+                    <option value="Total Amount <=" {{ $approval->type == 'Total Amount <=' ? 'selected' : '' }}>Total Amount <=</option>
+                    <option value="Total Amount <" {{ $approval->type == 'Total Amount <' ? 'selected' : '' }}>Total Amount <</option>
                 </select>
             </div>
 
             <div class="mb-3" id="valueField">
                 <label class="form-label">Value</label>
-                <input type="number" name="value" class="form-control">
+                <input type="number" name="value" class="form-control" value="{{ $approval->value }}">
             </div>
 
             <div class="mb-3" id="nikField">
@@ -37,27 +39,27 @@
                 <select name="nik" id="nik" class="form-control">
                     <option value="">-- Pilih NIK --</option>
                     @foreach ($employees as $nik => $name)
-                        <option value="{{ $nik }}">{{ $nik }} - {{ $name }}</option>
+                        <option value="{{ $nik }}" {{ $approval->nik == $nik ? 'selected' : '' }}>{{ $nik }} - {{ $name }}</option>
                     @endforeach
                 </select>
             </div>
 
             <div class="mb-3" id="nameField">
                 <label class="form-label">Nama</label>
-                <input type="text" name="name" id="name" class="form-control" readonly>
+                <input type="text" name="name" id="name" class="form-control" value="{{ $approval->name }}" disabled>
             </div>
 
             <div class="mb-3" id="emailField">
                 <label class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-control" readonly>
+                <input type="email" name="email" id="email" class="form-control" value="{{ $approval->email }}" disabled>
             </div>
 
             <div class="mb-3" id="positionField">
                 <label class="form-label">Jabatan</label>
-                <input type="text" name="position" id="position" class="form-control" readonly>
+                <input type="text" name="position" id="position" class="form-control" value="{{ $approval->position }}" disabled>
             </div>
 
-            <button type="submit" id="save-button" class="btn btn-primary">Simpan</button>
+            <button type="submit" class="btn btn-primary">Update</button>
             <a href="{{ route('workflow-approvals.index') }}" class="btn btn-secondary">Kembali</a>
         </form>
     </div>
@@ -85,6 +87,9 @@
             if (typeField.value === 'Custom') {
                 valueField.style.display = 'none';
                 nikField.style.display = 'block';
+                nameField.style.display = 'block';
+                emailField.style.display = 'block';
+                positionField.style.display = 'block';
             } else if (typeField.value === 'HRIS') {
                 valueField.style.display = 'none';
                 nikField.style.display = 'none';
@@ -100,7 +105,6 @@
             }
         }
 
-        // Fetch employee data when NIK is selected
         nikInput.addEventListener('change', function() {
             const selectedNik = this.value;
 

@@ -22,13 +22,49 @@ class WorkflowApprovalController extends Controller
 
     public function store(Request $request)
     {
-        $workflow = WorkflowApproval::create($request->all());
+        WorkflowApproval::create($request->all());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Workflow berhasil disimpan!',
-            'data' => $workflow
-        ]);
+        return redirect()->route('workflow-approvals.index')->with('success', 'Workflow Approval berhasil ditambahkan.');
     }
 
+    public function edit($id)
+    {
+        $approval = WorkflowApproval::findOrFail($id);
+        $employees = Employee::pluck('name', 'nik');
+        
+        return view('workflow-approvals.edit', compact('approval', 'employees'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'modul' => 'required|string|max:255',
+            'type' => 'required|string',
+            'value' => 'nullable|numeric',
+            'nik' => 'nullable|string|max:255',
+        ]);
+
+        $approval = WorkflowApproval::findOrFail($id);
+        $employee = Employee::where('nik', $request->nik)->first();
+
+        $approval->update([
+            'modul' => $request->modul,
+            'type' => $request->type,
+            'value' => $request->value,
+            'nik' => $request->nik,
+            'name' => $employee->name ?? null,
+            'email' => $employee->email ?? null,
+            'position' => $employee->position ?? null,
+        ]);
+
+        return redirect()->route('workflow-approvals.index')->with('success', 'Workflow Approval berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $approval = WorkflowApproval::findOrFail($id);
+        $approval->delete();
+
+        return redirect()->route('workflow-approvals.index')->with('success', 'Workflow Approval berhasil dihapus.');
+    }
 }
