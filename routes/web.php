@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\NeedApprovalController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WorkflowApprovalController;
 use App\Models\Employee;
@@ -25,6 +26,8 @@ Route::put('/transactions/{id}', [TransactionController::class, 'update'])->name
 Route::delete('/transactions/{id}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
+
+Route::get('/need-approvals', [NeedApprovalController::class, 'index'])->name('need-approvals.index');
 
 Route::get('/get-employee/{nik}', function ($nik) {
     $employee = Employee::where('nik', $nik)->first();

@@ -21,7 +21,7 @@ class NeedApproval extends Model
         return $this->belongsTo(Transaction::class);
     }
 
-    public function workflowApproval()
+    public function modul()
     {
         return $this->belongsTo(WorkflowApproval::class, 'modul_id', 'id');
     }
