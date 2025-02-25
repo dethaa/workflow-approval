@@ -28,8 +28,18 @@
         </div>
     </nav>
 
-    <div class="container mt-4">
-        @yield('content')
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 bg-light p-3">
+                @include('layouts.sidebar')
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 mt-4">
+                @yield('content')
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
