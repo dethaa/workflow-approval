@@ -11,4 +11,14 @@ class Transaction extends Model
         'amount',
         'created_by',
     ];
+
+    public function modul()
+    {
+        return $this->belongsTo(WorkflowApproval::class, 'modul_id');
+    }
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'created_by', 'nik');
+    }
 }
