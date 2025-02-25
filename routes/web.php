@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WorkflowApprovalController;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('employees.index');
 });
 
 Route::get('/workflow-approvals', [WorkflowApprovalController::class, 'index'])->name('workflow-approvals.index');
@@ -22,6 +23,8 @@ Route::post('/transactions', [TransactionController::class, 'store'])->name('tra
 Route::get('/transactions/{id}/edit', [TransactionController::class, 'edit'])->name('transactions.edit');
 Route::put('/transactions/{id}', [TransactionController::class, 'update'])->name('transactions.update');
 Route::delete('/transactions/{id}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+
+Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 
 Route::get('/get-employee/{nik}', function ($nik) {
     $employee = Employee::where('nik', $nik)->first();
