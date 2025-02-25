@@ -68,7 +68,6 @@ class TransactionController extends Controller
                 return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil ditambahkan.');
             }
 
-
             NeedApproval::create([
                 'modul_id' => $modul->id,
                 'transaction_id' => $transaction->id,

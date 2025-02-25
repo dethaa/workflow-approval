@@ -14,7 +14,7 @@
             
             <div class="mb-3">
                 <label for="modul_id" class="form-label">Modul</label>
-                <select name="modul_id" id="modul_id" class="form-control">
+                <select name="modul_id" id="modul_id" class="form-control" required>
                     <option value="">-- Pilih Modul --</option>
                     @foreach ($modules as $key => $name)
                         <option value="{{ $key }}" {{ $transaction->modul_id == $key ? 'selected' : '' }}>
@@ -26,12 +26,12 @@
 
             <div class="mb-3">
                 <label class="form-label">Amount</label>
-                <input type="number" name="amount" class="form-control" value="{{ $transaction->amount }}">
+                <input type="number" name="amount" class="form-control" value="{{ $transaction->amount }}" required>
             </div>
 
             <div class="mb-3">
                 <label for="created_by" class="form-label">Created By</label>
-                <select name="created_by" id="created_by" class="form-control">
+                <select name="created_by" id="created_by" class="form-control" required>
                     <option value="">-- Pilih NIK --</option>
                     @foreach ($employees as $nik => $name)
                         <option value="{{ $nik }}" {{ $transaction->created_by == $nik ? 'selected' : '' }}>

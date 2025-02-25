@@ -20,20 +20,20 @@
             <div class="mb-3">
                 <label class="form-label">Tipe</label>
                 <select name="type" id="type" class="form-select" required>
-                    @foreach (\App\Models\WorkflowApproval::TYPE_OPTIONS as $value => $label)
-                        <option value="{{ $value }}" {{ $approval->type == $value ? 'selected' : '' }}>{{ $label }}</option>
+                    @foreach (\App\Models\WorkflowApproval::TYPE_OPTIONS as $type)
+                        <option value="{{ $type }}" {{ $approval->type == $type ? 'selected' : '' }}>{{ $type }}</option>
                     @endforeach
                 </select>
             </div>
 
             <div class="mb-3" id="valueField">
                 <label class="form-label">Value</label>
-                <input type="number" name="value" class="form-control" value="{{ $approval->value }}">
+                <input type="number" name="value" class="form-control" value="{{ $approval->value }}" required>
             </div>
 
             <div class="mb-3" id="nikField">
                 <label for="nik" class="form-label">NIK</label>
-                <select name="nik" id="nik" class="form-control">
+                <select name="nik" id="nik" class="form-control" required>
                     <option value="">-- Pilih NIK --</option>
                     @foreach ($employees as $nik => $name)
                         <option value="{{ $nik }}" {{ $approval->nik == $nik ? 'selected' : '' }}>{{ $nik }} - {{ $name }}</option>

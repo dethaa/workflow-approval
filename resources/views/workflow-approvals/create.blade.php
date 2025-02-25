@@ -26,12 +26,12 @@
 
             <div class="mb-3" id="valueField">
                 <label class="form-label">Value</label>
-                <input type="number" name="value" class="form-control">
+                <input type="number" name="value" class="form-control" required>
             </div>
 
             <div class="mb-3" id="nikField">
                 <label for="nik" class="form-label">NIK</label>
-                <select name="nik" id="nik" class="form-control">
+                <select name="nik" id="nik" class="form-control" required>
                     <option value="">-- Pilih NIK --</option>
                     @foreach ($employees as $nik => $name)
                         <option value="{{ $nik }}">{{ $nik }} - {{ $name }}</option>
@@ -82,6 +82,9 @@
             if (typeField.value === 'Custom') {
                 valueField.style.display = 'none';
                 nikField.style.display = 'block';
+                nameField.style.display = 'block';
+                emailField.style.display = 'block';
+                positionField.style.display = 'block';  
             } else if (typeField.value === 'HRIS') {
                 valueField.style.display = 'none';
                 nikField.style.display = 'none';
